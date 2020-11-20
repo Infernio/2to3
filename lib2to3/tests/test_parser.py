@@ -86,7 +86,7 @@ class TestPgen2Caching(support.TestCase):
             sub_env['PYTHONHASHSEED'] = 'random'
             subprocess.check_call(
                     [sys.executable, '-c', """
-from lib2to3.pgen2 import driver as pgen2_driver
+from 2to3.pgen2 import driver as pgen2_driver
 pgen2_driver.load_grammar(%r, save=True, force=True)
                     """ % (grammar_sub_copy,)],
                     env=sub_env)

@@ -14,7 +14,7 @@ class FixerTestCase(support.TestCase):
 
     # Other test cases can subclass this class and replace "fixer_pkg" with
     # their own.
-    def setUp(self, fix_list=None, fixer_pkg="lib2to3", options=None):
+    def setUp(self, fix_list=None, fixer_pkg="2to3", options=None):
         if fix_list is None:
             fix_list = [self.fixer]
         self.refactor = support.get_refactorer(fixer_pkg, fix_list, options)
@@ -55,7 +55,7 @@ class FixerTestCase(support.TestCase):
     def assert_runs_after(self, *names):
         fixes = [self.fixer]
         fixes.extend(names)
-        r = support.get_refactorer("lib2to3", fixes)
+        r = support.get_refactorer("2to3", fixes)
         (pre, post) = r.get_fixers()
         n = "fix_" + self.fixer
         if post and post[-1].__class__.__module__.endswith(n):

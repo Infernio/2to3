@@ -24,7 +24,7 @@ try:
 finally:
     sys.path.pop()
 
-_2TO3_FIXERS = refactor.get_fixers_from_package("lib2to3.fixes")
+_2TO3_FIXERS = refactor.get_fixers_from_package("2to3.fixes")
 
 class TestRefactoringTool(unittest.TestCase):
 
@@ -294,7 +294,7 @@ from __future__ import print_function"""
         os.linesep = "\r\n"
         try:
             fn = os.path.join(TEST_DATA_DIR, "crlf.py")
-            fixes = refactor.get_fixers_from_package("lib2to3.fixes")
+            fixes = refactor.get_fixers_from_package("2to3.fixes")
             self.check_file_refactoring(fn, fixes)
         finally:
             os.linesep = old_sep

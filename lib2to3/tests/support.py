@@ -34,12 +34,12 @@ def run_all_tests(test_mod=None, tests=None):
 def reformat(string):
     return dedent(string) + "\n\n"
 
-def get_refactorer(fixer_pkg="lib2to3", fixers=None, options=None):
+def get_refactorer(fixer_pkg="2to3", fixers=None, options=None):
     """
     A convenience function for creating a RefactoringTool for tests.
 
     fixers is a list of fixers for the RefactoringTool to use. By default
-    "lib2to3.fixes.*" is used. options is an optional dictionary of options to
+    "2to3.fixes.*" is used. options is an optional dictionary of options to
     be passed to the RefactoringTool.
     """
     if fixers is not None:
