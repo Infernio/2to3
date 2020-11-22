@@ -9,6 +9,7 @@ import os
 import difflib
 import logging
 import shutil
+import operator
 import optparse
 
 from . import refactor
@@ -195,10 +196,43 @@ def main(fixer_pkg, args=None):
         warn("not writing files and not printing diffs; that's not very useful")
     if not options.write and options.nobackups:
         parser.error("Can't use -n without -w")
+    if options.print_function:
+        flags["print_function"] = True
+    if options.exec_function:
+        flags["exec_function"] = True
     if options.list_fixes:
-        print("Available transformations for the -f/--fix option:")
-        for fixname in refactor.get_all_fix_names(fixer_pkg):
-            print(fixname)
+        fixer_opts = {"print_function": False, "exec_function": False,
+                      "write_unchanged_files": False}
+        if flags:
+            fixer_opts.update(flags)
+        fixer_log = []
+        def get_fixers(fix_names):
+            """Stolen from RefactoringTool.get_fixers."""
+            pre_order_fixers = []
+            post_order_fixers = []
+            for fix_mod_path in fix_names:
+                mod = __import__(fix_mod_path, {}, {}, ["*"])
+                fix_name = fix_mod_path.rsplit(".", 1)[-1]
+                if fix_name.startswith("fix_"):
+                    fix_name = fix_name[len("fix_"):]
+                parts = fix_name.split("_")
+                class_name = "Fix" + "".join(
+                    [p.title() for p in parts])
+                fix_class = getattr(mod, class_name)
+                fixer = fix_class(fixer_opts, fixer_log)
+                if fixer.order == "pre":
+                    pre_order_fixers.append(fixer)
+                elif fixer.order == "post":
+                    post_order_fixers.append(fixer)
+            key_func = operator.attrgetter("run_order")
+            pre_order_fixers.sort(key=key_func)
+            post_order_fixers.sort(key=key_func)
+            return pre_order_fixers + post_order_fixers
+        print("Available transformations for the -f/--fix option, sorted by "
+              "the order in which they will run:")
+        for fixer in get_fixers(refactor.get_fixers_from_package(fixer_pkg)):
+            # Strip off the fixer_pkg and fix_ from the beginning of the module
+            print(type(fixer).__module__[len(fixer_pkg) + len('fix_') + 1:])
         if not args:
             return 0
     if not args:
@@ -210,11 +244,6 @@ def main(fixer_pkg, args=None):
         if options.write:
             print("Can't write to stdin.", file=sys.stderr)
             return 2
-    if options.print_function:
-        flags["print_function"] = True
-
-    if options.exec_function:
-        flags["exec_function"] = True
 
     # Set up logging handler
     level = logging.DEBUG if options.verbose else logging.INFO
