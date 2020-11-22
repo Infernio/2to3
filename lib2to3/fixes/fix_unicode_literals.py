@@ -8,12 +8,12 @@ r"""Fixer for unicode literals.
 from ..pgen2 import token
 from .. import fixer_base
 
-class FixUnicode(fixer_base.BaseFix):
+class FixUnicodeLiterals(fixer_base.BaseFix):
     BM_compatible = True
     PATTERN = "STRING"
 
     def start_tree(self, tree, filename):
-        super(FixUnicode, self).start_tree(tree, filename)
+        super(FixUnicodeLiterals, self).start_tree(tree, filename)
         self.unicode_literals = 'unicode_literals' in tree.future_features
 
     def transform(self, node, results):
