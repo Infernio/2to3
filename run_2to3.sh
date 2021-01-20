@@ -30,7 +30,7 @@ function contains() {
 }
 
 # Fixers that we want to skip, e.g. because they just break things
-SKIPPED_FIXERS="funcattrs"
+SKIPPED_FIXERS="funcattrs unicode_literals"
 
 # The working directory that the script was run in
 WORKING_DIR="$(pwd)"
