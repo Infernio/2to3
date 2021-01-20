@@ -11,7 +11,7 @@ _mapping = {"unichr" : "chr", "unicode" : "str", "__unicode__": "__str__"}
 
 class FixUnicode(fixer_base.BaseFix):
     BM_compatible = True
-    PATTERN = "'unicode' | 'unichr'"
+    PATTERN = "'unicode' | 'unichr' | '__unicode__'"
 
     def transform(self, node, results):
         if node.type == token.NAME:
