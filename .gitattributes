@@ -1,0 +1,2 @@
+# Force use of LF endings, otherwise WSL blows
+*.sh text eol=lf
