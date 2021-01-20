@@ -1,3 +1,6 @@
 *.pyc
 .idea/
 *.pickle
+
+# Used by me for testing fixers
+test.py
