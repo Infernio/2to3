@@ -12,14 +12,13 @@ class FixNoopU(fixer_base.BaseFix):
     def transform(self, node, results):
         # 1. The node in question must be of the form u''
         if node.value == 'u\'\'':
-            siblings = node.parent.children
-            my_index = siblings.index(node)
+            next_node = node.next_sibling
             # 2. It must have a sibling right after it
-            next_index = my_index + 1
-            if next_index < len(siblings):
-                next_node = siblings[next_index]
+            if next_node:
                 # 3. That sibling must be a string too
                 if (next_node.type == token.STRING and
-                    next_node.value[0] == u'r'):
+                    next_node.value[0] == 'r'):
                     # If all that is true, delete the u'' node
-                    siblings[my_index].remove()
+                    node.remove()
+                    # Clean up any spaces between this node and the raw string
+                    next_node.prefix = ''
