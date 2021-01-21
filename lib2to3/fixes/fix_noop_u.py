@@ -20,5 +20,6 @@ class FixNoopU(fixer_base.BaseFix):
                     next_node.value[0] == 'r'):
                     # If all that is true, delete the u'' node
                     node.remove()
-                    # Clean up any spaces between this node and the raw string
-                    next_node.prefix = ''
+                    # Move the other node into the position this one was in
+                    # (this drops e.g. spaces between the two nodes)
+                    next_node.prefix = node.prefix
