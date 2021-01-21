@@ -30,7 +30,7 @@ function contains() {
 }
 
 # Fixers that we want to skip, e.g. because they just break things
-SKIPPED_FIXERS="funcattrs unicode_literals ws_comma"
+SKIPPED_FIXERS="funcattrs idioms unicode_literals ws_comma"
 
 # The working directory that the script was run in
 WORKING_DIR="$(pwd)"
