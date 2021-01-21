@@ -30,7 +30,13 @@ function contains() {
 }
 
 # Fixers that we want to skip, e.g. because they just break things
-SKIPPED_FIXERS="funcattrs idioms unicode_literals ws_comma"
+#  funcattrs: Fixes nothing, just breaks a couple lines
+#  idioms: All valid changes were backported, now just breaks a couple lines
+#  noop_u: u'' r'' is a noop on py3. We can do this at a later point
+#  object_super: class foo(object): is a noop on py3. We can do this at a later point
+#  unicode_literals: u'' is a noop on py3. We can do this at a later point
+#  ws_comma: Pure PEP8 fixer. Will be done when/if we PEP8 the codebase
+SKIPPED_FIXERS="funcattrs idioms noop_u object_super unicode_literals ws_comma"
 
 # The working directory that the script was run in
 WORKING_DIR="$(pwd)"
