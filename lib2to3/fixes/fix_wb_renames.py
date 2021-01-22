@@ -4,7 +4,7 @@ positives in WB's codebase."""
 from ..pgen2 import token
 from .. import fixer_base
 
-_remaps = {'getheaders': 'get'}
+_remaps = {'getheaders': 'get', 'clock': 'process_time'}
 
 class FixWbRenames(fixer_base.BaseFix):
     BM_compatible = True
